@@ -115,15 +115,8 @@ Python list pop
 
 '''
 
-def linear_search(data, num):
-    # Ex2.1-3
-    for i in range(len(data)):
-        if num == data[i]:
-            print 'Found it! ', i, data[i]
-            return i
-    print 'Not found'
-    return None
 
+    
 n = 1E3
 #print insertion_sort(nums)
 
