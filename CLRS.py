@@ -7,6 +7,7 @@ For 6.006 MIT Algorithm I
 """
 import time
 import random
+import sys
 
 sorted_data = []
 
@@ -64,6 +65,7 @@ def benchmark(func, n, asc = True):
     start = time.time()
     
     nums = func(data, asc)
+    #nums = func(data, 0, len(data) - 1)
     
     end = time.time()
     print 'Count: ', len(nums)
@@ -177,15 +179,58 @@ def merge_sort(A, asc = True):
     '''
     return E
 
+def merge_sort_clrs(A, p, r):
+    if p < r:
+        q = (p+r)/2
+        #print 'a', p, q, r
+        merge_sort_clrs(A, p, q)
+        merge_sort_clrs(A, q + 1, r)
+        merge_clrs(A, p, q, r)
+    return A
+    
+def merge_clrs(A, p, q, r):
+    #n1 = q - p + 1
+    #n2 = r - q
+    L = A[ p : q + 1]
+    R = A[q + 1: r + 1]
+    L.append(sys.maxint) # Sentinel
+    R.append(sys.maxint)
+    #print 'b', p, q, r, L, R, A
+    i = 0
+    j = 0
+    for k in range(p, r + 1):
+        #print 'c', k, L[i], R[j], i, j
+        if L[i] <= R[j]:
+            A[k] = L[i]
+            i += 1
+        else:
+            A[k] = R[j]
+            j += 1
+    return A
+         
+def f_b(A):
+    A.append(99)
+    
+def f_a():
+    A = [1,2]
+    f_b(A)
+    print A
+    
+#f_a()
+        
 A1 = [5]
 A2 = [6,7]
 #print A1, A2
 #print combine(A1, A2)
 
-A = [3,2,5,7,6]
-#print merge_sort(A)
+#print merge_clrs([5, 6, 1, 4], 0, 2, 3)
+
+#merge_sort_clrs([])
+
+A = [5, 2, 4, 7, 1, 3, 2, 6]
+print merge_sort_clrs(A, 0, 7)
     
-n = 1E5
+n = 1E6
 
 '''
 Merge Sort
@@ -193,6 +238,9 @@ Merge Sort
 1E4: 0.06
 1E5: 0.77
 1E6: 9.2s
+
+clrs:
+1E6: 7.1s
 
 '''
 #print insertion_sort(nums)
@@ -205,4 +253,5 @@ Merge Sort
 
 #print insertion_sort_clrs(nums)
 
-benchmark(merge_sort, n)
+#benchmark(merge_sort, n)
+#benchmark(merge_sort_clrs, n)
