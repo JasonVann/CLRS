@@ -68,7 +68,7 @@ def benchmark(func, n, asc = True):
     end = time.time()
     print 'Count: ', len(nums)
     print 'Func execution time: ', (end - start)
-    validate_sort(sorted_data, asc)
+    validate_sort(nums, asc)
   
 
 def stress_test_prep(n, lo, hi):
@@ -87,7 +87,7 @@ def validate_sort(data, asc):
     for i in range(1, len(data) - 1):
         if (asc and data[i] > data[i + 1]) or (not asc and data[i] < data[i + 1]):
             print "Sorting failed: ", i, data[i], data[i + 1]
-            break
+            return
     print 'Sorting succeeds: ', len(data)
     
 nums = [5,2,4,6,1,3]
@@ -115,15 +115,94 @@ Python list pop
 
 '''
 
-
+def combine(A1, A2, asc):
+    # A1, A2 are all sorted
+    # O(n)
+    sorted_A = []
+    if(len(A1) > len(A2)):
+        big = A1
+        small = A2
+    else:
+        big = A2
+        small = A1
+    i = 0
+    j = 0
+    while True:
+        #print i, j, sorted_A
+        if j == len(big):
+            sorted_A.extend(small[i:])
+            break
+        elif i == len(small):
+            #print 'b', sorted_A, j, big[j:]
+            sorted_A.extend(big[j:])
+            break
+        #print i, j, small[i], big[j], sorted_A        
+        if(small[i] > big[j]):
+            sorted_A.append(big[j])
+            j += 1
+        else:
+            sorted_A.append(small[i])
+            i += 1
+            
+    #sorted_A.extend(big[len(small):])
+    return sorted_A
+   
+def merge_sort(A, asc = True):
+    # 2.3.1
+    n = len(A)
+    if n == 1:
+        return A
+    elif n == 2:
+        if A[0] > A[1]:
+            temp = []
+            temp.append(A[1])
+            temp.append(A[0])
+            return temp
+        else:
+            return A
+            
+    A1 = A[:n/2]
+    A2 = A[n/2:]
     
-n = 1E3
+    C = merge_sort(A1, asc)
+    D = merge_sort(A2, asc)
+    E = combine(C, D, asc)    
+    #print 'merged:', C, D, E
+    '''
+    print A1
+    merge_sort(A1, asc)
+    merge_sort(A2, asc)
+    print A1
+    A = combine(A1, A2, asc)
+    '''
+    return E
+
+A1 = [5]
+A2 = [6,7]
+#print A1, A2
+#print combine(A1, A2)
+
+A = [3,2,5,7,6]
+#print merge_sort(A)
+    
+n = 1E5
+
+'''
+Merge Sort
+1E3: 0.004
+1E4: 0.06
+1E5: 0.77
+1E6: 9.2s
+
+'''
 #print insertion_sort(nums)
 
 #benchmark(insertion_sort, n)
-benchmark(insertion_sort_clrs, n, asc = False)
+#benchmark(insertion_sort_clrs, n, asc = False)
+
 #benchmark(test_list_insert, n)
 #benchmark(test_list_pop, n)
 
 #print insertion_sort_clrs(nums)
 
+benchmark(merge_sort, n)
