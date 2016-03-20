@@ -76,3 +76,22 @@ def Test_Ex214():
 
 #Test_Ex214()
 
+# Ex2.3-4
+# T(n) = T(n-1) + n
+# => O(n^2)
+
+# Ex2.3-5
+def binary_search(data, lo, hi, a):
+    if lo > hi:
+        return 'Not found'
+    elif lo == hi and data[lo] != a:
+        return 'Not found'
+    mid = lo + (hi - lo)/2
+    if data[mid] > a:
+        return binary_search(data, lo, mid - 1, a)
+    elif data[mid] == a:
+        return mid
+    else:
+        return binary_search(data, mid + 1, hi, a)
+        
+print binary_search([1,2,3,6,7], 0, 4, 1)

@@ -24,7 +24,7 @@ def insertion_sort(nums):
                 nums.pop(j)         #O(n)
                 nums.insert(i, temp) # O(n)
     sorted_data = nums
-    return nums
+    return nums                    
 
 def insertion_sort_clrs(A, asc = True):
     global sorted_data
@@ -180,6 +180,7 @@ def merge_sort(A, asc = True):
     return E
 
 def merge_sort_clrs(A, p, r):
+    # r: index of last item
     if p < r:
         q = (p+r)/2
         #print 'a', p, q, r
@@ -206,7 +207,7 @@ def merge_clrs(A, p, q, r):
         else:
             A[k] = R[j]
             j += 1
-    return A
+    #return A
          
 def f_b(A):
     A.append(99)
@@ -230,7 +231,7 @@ A2 = [6,7]
 A = [5, 2, 4, 7, 1, 3, 2, 6]
 print merge_sort_clrs(A, 0, 7)
     
-n = 1E6
+n = 1E2
 
 '''
 Merge Sort
@@ -255,3 +256,33 @@ clrs:
 
 #benchmark(merge_sort, n)
 #benchmark(merge_sort_clrs, n)
+
+def bubble_sort(A, asc = True):
+    # sort asc
+    n = len(A)
+    for i in range(0, n):
+        for j in range(n - 1, i, -1):
+            if A[j] < A[j-1] and asc:
+                temp = A[j - 1]
+                A[j - 1] = A[j]
+                A[j] = temp
+            elif A[j] > A[j-1] and not asc:
+                temp = A[j - 1]
+                A[j - 1] = A[j]
+                A[j] = temp
+                
+    return A
+    
+A = [2,3,1,0,18,11]
+#print bubble_sort(A, False)
+
+n = 1E2
+
+'''
+Bubble Sort
+1E3: 0.11s
+1E4: 12s
+
+
+'''
+#benchmark(bubble_sort, n)
