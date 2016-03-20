@@ -61,15 +61,17 @@ def benchmark(func, n, asc = True):
     hi = 10000
     data = stress_test_prep(int(n), lo, hi)
     
-    #print data[:20]
+    #print data
     start = time.time()
     
-    nums = func(data, asc)
-    #nums = func(data, 0, len(data) - 1)
+    #nums = func(data, asc)
+    # For merge sort:
+    nums = func(data, 0, len(data) - 1)
     
     end = time.time()
     print 'Count: ', len(nums)
     print 'Func execution time: ', (end - start)
+    #print nums
     validate_sort(nums, asc)
   
 
@@ -179,6 +181,34 @@ def merge_sort(A, asc = True):
     '''
     return E
 
+import math
+
+def merge_sort_insertion(A, p, r):
+    # r: index of last item
+    # switch to insertion sort on small arrays
+    k = int(math.log(len(A), 2))
+    #print k
+    if p < r:
+        q = (p+r)/2
+        #print 'a', p, q, r
+        if r - p < k:
+            A[p: r + 1] = insertion_sort(A[p: r + 1])
+        else:
+            merge_sort_insertion(A, p, q)
+            merge_sort_insertion(A, q + 1, r)
+            merge_clrs(A, p, q, r)
+    return A
+    
+
+A = [5, 6, 3, 5, 7, 9, -1, 8, 4]
+A1 = [1344, 8475, 7638, 2551, 4955, 4495, 6516, 7888, 939, 284, 8358, 4328, 7623, 22, 4454, 7216, 2288, 9453, 9015, 306, 255, 5415, 9392, 3813, 2166, 4222, 291, 2217, 4379, 4959, 2331, 2309, 2188, 4597, 2898, 215, 8376, 5565, 6423, 1860, 9926, 8600, 1209, 3327, 7215, 7112, 9365, 4222, 8301, 6704, 3034, 5876, 8825, 8462, 5053, 5891, 346, 2428, 7975, 4144, 1731, 5488, 7031, 6745, 3748, 4390, 5085, 7785, 5210, 3933, 4897, 296, 435, 7034, 9832, 5932, 3936, 1704, 5023, 9821, 7706, 5397, 8603, 2322, 5138, 9525, 5778, 4592, 2693, 5480, 9572, 58, 7837, 8205, 8862, 7406, 8092, 5187, 5614, 4261]
+
+#print merge_sort_insertion(A1, 0, len(A1) - 1)
+
+n = 1e2
+#benchmark(merge_sort_insertion, n)
+
+
 def merge_sort_clrs(A, p, r):
     # r: index of last item
     if p < r:
@@ -226,12 +256,15 @@ A2 = [6,7]
 
 #print merge_clrs([5, 6, 1, 4], 0, 2, 3)
 
+
+
 #merge_sort_clrs([])
 
 A = [5, 2, 4, 7, 1, 3, 2, 6]
-print merge_sort_clrs(A, 0, 7)
+#print merge_sort_clrs(A, 0, 7)
     
-n = 1E2
+n = 1E3
+#benchmark(merge_sort_insertion, n)
 
 '''
 Merge Sort
@@ -242,6 +275,11 @@ Merge Sort
 
 clrs:
 1E6: 7.1s
+
+Merge sort with insertion sort
+1E4: 0.04
+1E5:0.5
+1E6: 6.28s
 
 '''
 #print insertion_sort(nums)
@@ -255,6 +293,7 @@ clrs:
 #print insertion_sort_clrs(nums)
 
 #benchmark(merge_sort, n)
+
 #benchmark(merge_sort_clrs, n)
 
 def bubble_sort(A, asc = True):

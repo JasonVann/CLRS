@@ -95,3 +95,14 @@ def binary_search(data, lo, hi, a):
         return binary_search(data, mid + 1, hi, a)
         
 print binary_search([1,2,3,6,7], 0, 4, 1)
+
+# PS 2-3
+# a. O(n)
+# b. O(n^2)
+
+'''PS 2-4
+a. (2, 1), (3, 1), (8, 1), (6, 1), (8, 6)
+b. sorted desc,  (n - 1) + (n - 2) +... 1 -> n*(n-1)/2
+
+
+'''
