@@ -119,6 +119,41 @@ Python list pop
 
 '''
 
+def combine_inversion(A1, A2, asc, count):
+    # A1, A2 are all sorted
+    # O(n)
+    sorted_A = []
+    if(len(A1) > len(A2)):
+        big = A1
+        small = A2
+    else:
+        big = A2
+        small = A1
+    i = 0
+    j = 0
+    while True:
+        #print i, j, sorted_A
+        if j == len(big):
+            sorted_A.extend(small[i:])
+            break
+        elif i == len(small):
+            #print 'b', sorted_A, j, big[j:]
+            sorted_A.extend(big[j:])
+            break
+        #print i, j, small[i], big[j], sorted_A        
+        if(small[i] > big[j]):
+            count += len(A1[i : ])
+            sorted_A.append(big[j])
+            j += 1
+        else:
+            sorted_A.append(small[i])
+            i += 1
+            
+    #sorted_A.extend(big[len(small):])
+    return count
+   
+#print combine_inversion([5, 9], [4,7], True, 0)
+
 def combine(A1, A2, asc):
     # A1, A2 are all sorted
     # O(n)
@@ -201,12 +236,56 @@ def merge_sort_insertion(A, p, r):
     
 
 A = [5, 6, 3, 5, 7, 9, -1, 8, 4]
-A1 = [1344, 8475, 7638, 2551, 4955, 4495, 6516, 7888, 939, 284, 8358, 4328, 7623, 22, 4454, 7216, 2288, 9453, 9015, 306, 255, 5415, 9392, 3813, 2166, 4222, 291, 2217, 4379, 4959, 2331, 2309, 2188, 4597, 2898, 215, 8376, 5565, 6423, 1860, 9926, 8600, 1209, 3327, 7215, 7112, 9365, 4222, 8301, 6704, 3034, 5876, 8825, 8462, 5053, 5891, 346, 2428, 7975, 4144, 1731, 5488, 7031, 6745, 3748, 4390, 5085, 7785, 5210, 3933, 4897, 296, 435, 7034, 9832, 5932, 3936, 1704, 5023, 9821, 7706, 5397, 8603, 2322, 5138, 9525, 5778, 4592, 2693, 5480, 9572, 58, 7837, 8205, 8862, 7406, 8092, 5187, 5614, 4261]
+A1 = [1344, 8475, 7638, 2551, 4955, 4495, 6516, 7888, 939, 284, 8358]
+A1 = [2,3,8,6,1]
 
 #print merge_sort_insertion(A1, 0, len(A1) - 1)
 
 n = 1e2
 #benchmark(merge_sort_insertion, n)
+
+
+def merge_sort_clrs_inversion(A, p, r):
+    # r: index of last item
+    count = 0
+    if p < r:
+        q = (p+r)/2
+        #print 'a', p, q, r
+        count = count + merge_sort_clrs_inversion(A, p, q)
+        count = count + merge_sort_clrs_inversion(A, q + 1, r)
+        count = count + merge_clrs_inversion(A, p, q, r)
+    return count
+    
+def merge_clrs_inversion(A, p, q, r):
+    #n1 = q - p + 1
+    #n2 = r - q
+    L = A[ p : q + 1]
+    R = A[q + 1: r + 1]
+    L.append(sys.maxint) # Sentinel
+    R.append(sys.maxint)
+    #print 'b', p, q, r, L, R, A
+    i = 0
+    j = 0
+    #print 'l', L
+    count = 0
+    #print 'a', count
+    for k in range(p, r + 1):
+        #print 'c', k, L[i], R[j], i, j
+        if L[i] <= R[j]:
+            A[k] = L[i]
+            i += 1
+        else:
+            if (L[i] != sys.maxint):
+                #print q, p, count, L
+                count += q + 1 - p - i 
+                print A[p + i: q + 1], L[i], R[j], L, R
+                
+            A[k] = R[j]
+            j += 1
+    print 'b', count
+    return count
+
+print merge_sort_clrs_inversion(A1, 0, len(A1) - 1)
 
 
 def merge_sort_clrs(A, p, r):
@@ -282,6 +361,7 @@ Merge sort with insertion sort
 1E6: 6.28s
 
 '''
+
 #print insertion_sort(nums)
 
 #benchmark(insertion_sort, n)
@@ -325,3 +405,4 @@ Bubble Sort
 
 '''
 #benchmark(bubble_sort, n)
+
