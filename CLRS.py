@@ -285,8 +285,7 @@ def merge_clrs_inversion(A, p, q, r):
     print 'b', count
     return count
 
-print merge_sort_clrs_inversion(A1, 0, len(A1) - 1)
-
+#print merge_sort_clrs_inversion(A1, 0, len(A1) - 1)
 
 def merge_sort_clrs(A, p, r):
     # r: index of last item
@@ -334,8 +333,6 @@ A2 = [6,7]
 #print combine(A1, A2)
 
 #print merge_clrs([5, 6, 1, 4], 0, 2, 3)
-
-
 
 #merge_sort_clrs([])
 
@@ -405,4 +402,69 @@ Bubble Sort
 
 '''
 #benchmark(bubble_sort, n)
+
+def find_max_crossing_subarray(A, low, mid, high):
+    # C4.1
+    # high: index of last element
+    # treat mid in the left section
+    print low, mid, high
+    max_sum_r = -sys.maxint
+    max_sum_l = -sys.maxint
+    max_r_idx = 0
+    max_l_idx = 0
+    temp_sum_r = 0
+    temp_sum_l = 0
+    for i in range(mid + 1, high + 1):
+        if temp_sum_r + A[i] > max_sum_r:
+            max_r_idx = i
+            max_sum_r = temp_sum_r + A[i]
+        temp_sum_r += A[i]
+    # Then left
+    #if mid - low > 0:
+    for i in range(mid, low - 1, -1):
+        if temp_sum_l + A[i] > max_sum_l:
+            max_l_idx = i
+            max_sum_l = temp_sum_l + A[i]
+        temp_sum_l += A[i]
+    max_sum = max_sum_r + max_sum_l
+    print 'r', mid, high, max_r_idx, max_sum_r, A[max_r_idx]
+    print 'l', mid, low, max_l_idx, max_sum_l, A[max_l_idx]
+
+    result = [max_l_idx, max_r_idx, max_sum]
+    return result
+    
+
+def max_sub_array(A, p, r):
+    # r: index of last item
+    if p == r:
+        return [p, r, A[p]]
+    if p < r:
+        q = (p + r)/2
+        #print 'a', p, q, r
+        [l1, r1, max_sum1] =  max_sub_array(A, p, q)
+        [l2, r2, max_sum2] = max_sub_array(A, q + 1, r)
+        [l3, r3, max_sum3] = find_max_crossing_subarray(A, p, q, r)
+        print 'compare:', p, q, r, 'val:', max_sum1, max_sum2, max_sum3
+        if max_sum3 >= max_sum1 and max_sum3 >= max_sum2:
+            return [l3, r3, max_sum3]
+        elif max_sum2 >= max_sum3 and max_sum2 >= max_sum1:
+            return [l2, r2, max_sum2]
+        else:
+            return [l1, r1, max_sum1]
+    return 'Not found'
+    
+'''
+def max_sub_array(A):
+    if len(A) <= 1:
+        return A
+    elif len(A) == 2:
+        return 
+    sum_l = find_max_crossing_subarray(A, )
+'''
+    
+A = [13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7]
+#A = [0]
+#A = [13, 1, -2]
+print max_sub_array(A, 0, len(A) - 1)
+#find_max_crossing_subarray(A, 0, len(A)/2 - 1, len(A) - 1)
 
