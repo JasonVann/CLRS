@@ -106,3 +106,34 @@ b. sorted desc,  (n - 1) + (n - 2) +... 1 -> n*(n-1)/2
 
 
 '''
+
+import sys
+
+# Ex4.1-2
+def max_subarray_brute_force(A):
+    # find the max sub array by brute-force method
+    res = []
+    global_max = -sys.maxint
+    global_max_idx = -sys.maxint
+    for i in range(len(A)):
+        temp = []
+        temp_sum = 0
+        max_sum = -sys.maxint
+        for j in range(i, len(A)):
+            temp_sum += A[j]
+            if temp_sum > max_sum:
+                max_sum = temp_sum
+                temp = [max_sum, i, j]
+        res.append(temp)
+        if temp[0] > global_max:
+            global_max_idx = i
+            global_max = temp[0]
+
+    print res
+    print res[global_max_idx]
+    return res[global_max_idx][0]
+
+A = [13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7]
+#A = [0]
+#A = [13, 1, -2]
+print max_subarray_brutal_force(A)

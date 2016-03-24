@@ -433,7 +433,6 @@ def find_max_crossing_subarray(A, low, mid, high):
     result = [max_l_idx, max_r_idx, max_sum]
     return result
     
-
 def max_sub_array(A, p, r):
     # r: index of last item
     if p == r:
