@@ -260,12 +260,14 @@ A = [13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7, 3, 7, 5,
 #print max_subarray_brute_force(A, 11,21)
 
 def Ex413():
-    n = 5000
-    rep = 10
+    n = 1e3
+    rep = 1
     #benchmark(max_subarray_brute_force, n, rep)
     
-    benchmark(max_sub_array, n, rep)
-    benchmark(max_sub_array_mixed, n, rep)
+    #benchmark(max_sub_array, n, rep)
+    #benchmark(max_sub_array_mixed, n, rep)
+    benchmark(max_subarray_linear, n, rep)
+    
     sol =  '''
     n = 15, 4.2e-5s VS 4.5e-5s
     n = 16, 4.6e-5s VS 5e-5s
@@ -275,4 +277,41 @@ def Ex413():
     '''
     print sol
 
-Ex413()
+#Ex413()
+
+def max_subarray_linear(A, i, j):
+    # Given the max subarray ends at index j
+    temp_max = -sys.maxint
+    s = 0
+    temp_i = j
+    sums = []
+    temp_sum = 0
+    for k in range(0, len(A) - 1):
+        temp_sum += A[k]
+        sums.append(temp_sum)
+    
+    temp_max = max(sums)
+    j = sums.index(temp_max)
+    
+    #print sums, temp_max, j
+    
+    for k in range(j + 1, -1, -1):
+        s += A[k]
+        if s >= temp_max:
+            temp_max = s
+            temp_i = k
+    
+    #print temp_i, j + 1, temp_max
+    #print A[temp_i : j + 1]
+    return [temp_i, j + 1, temp_max]
+    
+def Ex415():
+    '''
+    1e7: 3.4s
+    '''
+    A = [13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7, 3, 7, 5, 3, 9, 11]
+    max_subarray_linear(A, 0, len(A) - 1)
+    #benchmark(max_subarray_linear, n, rep)
+
+Ex415()
+   
