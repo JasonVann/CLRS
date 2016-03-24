@@ -94,7 +94,7 @@ def binary_search(data, lo, hi, a):
     else:
         return binary_search(data, mid + 1, hi, a)
         
-print binary_search([1,2,3,6,7], 0, 4, 1)
+#print binary_search([1,2,3,6,7], 0, 4, 1)
 
 # PS 2-3
 # a. O(n)
@@ -110,30 +110,169 @@ b. sorted desc,  (n - 1) + (n - 2) +... 1 -> n*(n-1)/2
 import sys
 
 # Ex4.1-2
-def max_subarray_brute_force(A):
+def max_subarray_brute_force(A, lo = None, hi = None):
     # find the max sub array by brute-force method
     res = []
     global_max = -sys.maxint
     global_max_idx = -sys.maxint
-    for i in range(len(A)):
+    if lo == None:
+        lo = 0
+    if hi == None:
+        hi = len(A) - 1
+
+    #print lo, hi
+    for i in range(lo, hi + 1):
         temp = []
         temp_sum = 0
         max_sum = -sys.maxint
-        for j in range(i, len(A)):
+        for j in range(i, hi + 1):
             temp_sum += A[j]
             if temp_sum > max_sum:
                 max_sum = temp_sum
-                temp = [max_sum, i, j]
+                temp = [i, j, max_sum]
         res.append(temp)
-        if temp[0] > global_max:
-            global_max_idx = i
-            global_max = temp[0]
+        if temp[2] > global_max:
+            global_max_idx = i - lo
+            global_max = temp[2]
 
-    print res
-    print res[global_max_idx]
-    return res[global_max_idx][0]
+    #print res, global_max_idx
+    #print res[global_max_idx]
+    return res[global_max_idx]
 
-A = [13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7]
+def find_max_crossing_subarray(A, low, mid, high):
+    # C4.1
+    # high: index of last element
+    # treat mid in the left section
+    #print low, mid, high
+    max_sum_r = -sys.maxint
+    max_sum_l = -sys.maxint
+    max_r_idx = 0
+    max_l_idx = 0
+    temp_sum_r = 0
+    temp_sum_l = 0
+    for i in range(mid + 1, high + 1):
+        if temp_sum_r + A[i] > max_sum_r:
+            max_r_idx = i
+            max_sum_r = temp_sum_r + A[i]
+        temp_sum_r += A[i]
+    # Then left
+    #if mid - low > 0:
+    for i in range(mid, low - 1, -1):
+        if temp_sum_l + A[i] > max_sum_l:
+            max_l_idx = i
+            max_sum_l = temp_sum_l + A[i]
+        temp_sum_l += A[i]
+    max_sum = max_sum_r + max_sum_l
+    #print 'r', mid, high, max_r_idx, max_sum_r, A[max_r_idx]
+    #print 'l', mid, low, max_l_idx, max_sum_l, A[max_l_idx]
+
+    result = [max_l_idx, max_r_idx, max_sum]
+    return result
+    
+def max_sub_array(A, p, r):
+    # r: index of last item
+    if p == r:
+        return [p, r, A[p]]
+    if p < r:
+        q = (p + r)/2
+        #print 'a', p, q, r
+        [l1, r1, max_sum1] =  max_sub_array(A, p, q)
+        [l2, r2, max_sum2] = max_sub_array(A, q + 1, r)
+        [l3, r3, max_sum3] = find_max_crossing_subarray(A, p, q, r)
+        #print 'compare:', p, q, r, 'val:', max_sum1, max_sum2, max_sum3
+        if max_sum3 >= max_sum1 and max_sum3 >= max_sum2:
+            return [l3, r3, max_sum3]
+        elif max_sum2 >= max_sum3 and max_sum2 >= max_sum1:
+            return [l2, r2, max_sum2]
+        else:
+            return [l1, r1, max_sum1]
+    return 'Not found'
+    
+def max_sub_array_mixed(A, p, r):
+    # r: index of last item
+    if p == r:
+        return [p, r, A[p]]
+    if r - p < 20:
+            #print A, p, r
+            return  max_subarray_brute_force(A, p, r)
+            
+    if p < r:
+        q = (p + r)/2
+        #print 'a', p, q, r
+                    
+        [l1, r1, max_sum1] =  max_sub_array_mixed(A, p, q)
+        [l2, r2, max_sum2] = max_sub_array_mixed(A, q + 1, r)
+        [l3, r3, max_sum3] = find_max_crossing_subarray(A, p, q, r)
+        #print 'compare:', p, q, r, 'val:', max_sum1, max_sum2, max_sum3
+        if max_sum3 >= max_sum1 and max_sum3 >= max_sum2:
+            return [l3, r3, max_sum3]
+        elif max_sum2 >= max_sum3 and max_sum2 >= max_sum1:
+            return [l2, r2, max_sum2]
+        else:
+            return [l1, r1, max_sum1]
+    return 'Not found'
+    
+def benchmark(func, n, rep = 1, asc = True):
+    # benchmark and validate
+    #n = 1E4
+    lo = 1
+    hi = 10000
+    total_t = 0
+    i = 0
+    while i < rep:
+        data = stress_test_prep(int(n), lo, hi)
+        
+        #print data
+        start = time.time()
+        
+        #nums = func(data, asc)
+        # For merge sort:
+        nums = func(data, 0, len(data) - 1)
+        
+        end = time.time()
+        total_t += end - start
+        i += 1
+        
+    print 'result: ', nums
+    print 'Func execution time: ', total_t/float(rep)
+    #print nums
+    #validate_sort(nums, asc)
+  
+
+def stress_test_prep(n, lo, hi):
+    data = []
+    random.seed(1)
+    
+    for i in range(int(n)):
+        a = random.randint(lo, hi)
+        #b = random.randint(a, hi)
+        #temp = (a, b)
+        #print temp
+        data.append(a)
+    return data
+    
+A = [13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7, 3, 7, 5, 3, 9, 11]
 #A = [0]
 #A = [13, 1, -2]
-print max_subarray_brutal_force(A)
+#print max_subarray_brute_force(A, 0, len(A) - 1)
+#print max_sub_array(A, 0, len(A) - 1)
+#print max_sub_array_mixed(A, 0, len(A) - 1)
+#print max_subarray_brute_force(A, 11,21)
+
+def Ex413():
+    n = 5000
+    rep = 10
+    #benchmark(max_subarray_brute_force, n, rep)
+    
+    benchmark(max_sub_array, n, rep)
+    benchmark(max_sub_array_mixed, n, rep)
+    sol =  '''
+    n = 15, 4.2e-5s VS 4.5e-5s
+    n = 16, 4.6e-5s VS 5e-5s
+    Crossover point is about 16 to 20
+    
+    When n is large, > 1000 or so, mixed version is about 10% faster
+    '''
+    print sol
+
+Ex413()
