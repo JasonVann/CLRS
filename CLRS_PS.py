@@ -280,7 +280,10 @@ def Ex413():
 #Ex413()
 
 def max_subarray_linear(A, i, j):
-    # Given the max subarray ends at index j
+    '''
+    First find the sum up to index k for every k
+    Then out of the max(sums), the max subarray is either the sums[j], or A[i..j+1]
+    '''
     temp_max = -sys.maxint
     s = 0
     temp_i = j
