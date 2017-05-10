@@ -11,7 +11,17 @@ def selection_sort(data):
                 idx = j
         data[i], data[idx] = data[idx], data[i]
 
+def selection_sort_clrs(data):
+    n = len(data)
+    for i in range(0, n-1):
+        smallest = i
+        for j in range(i+1, n):
+            if data[j] < data[smallest]:
+                smallest = j
+        data[i], data[smallest] = data[smallest], data[i]
+        
 data = gen_test()
-selection_sort(data)
+#selection_sort(data)
+selection_sort_clrs(data)
 print(verify_sort(data))
 

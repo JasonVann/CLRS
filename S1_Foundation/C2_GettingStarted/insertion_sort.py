@@ -21,7 +21,7 @@ def insertion_sort_clrs(nums):
         key = nums[j]
         i = j - 1
         while i >= 0 and nums[i] > key:
-            nums[i+1] = nums[i]
+            nums[i+1] = nums[i] # We know the new item is smaller so we move existing items forward by one
             i = i - 1
         nums[i+1] = key
 
