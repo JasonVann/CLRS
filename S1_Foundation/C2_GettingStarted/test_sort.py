@@ -14,5 +14,3 @@ def verify_sort(data):
             return False
 
     return True
-    
-    
