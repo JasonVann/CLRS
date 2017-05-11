@@ -6,8 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
-# Ignore file begins with * 
+# Ignore file begins with * or # or .# 
 \**
+\#*
+\.\#*
 
 # Distribution / packaging
 .Python
