@@ -75,7 +75,7 @@ def merge_sort_clrs(A, p, r):
         merge_sort_clrs(A, p, q)
         merge_sort_clrs(A, q+1, r)
         merge_clrs(A, p, q, r)
-    
+
 def test_merge():
     A = [9,1,3,5,7,9,11,13,2,4,6,8,10]
     #merge(A, 1, 7, 12)
@@ -86,5 +86,4 @@ def test_merge_sort(n = 1000):
     data = gen_test(n)
     merge_sort_clrs(data, 0, n-1)
     print(verify_sort(data))
-
     
