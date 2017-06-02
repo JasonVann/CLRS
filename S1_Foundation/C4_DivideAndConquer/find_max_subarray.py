@@ -5,7 +5,7 @@ Find the max subarray
 
 def find_max_crossing_subarray(A, low, mid, high):
     """
-    Given part of array A[low, high], find the max subarray that cross the mid point
+    Given part of array A[low, high], find the max subarray that cross the mid point in O(nlogn)
     Left subarray: A[low, mid]
     Right subarray: A[mid+1, high]
     Assumes this part of array has at least 2 elements
@@ -62,3 +62,50 @@ def find_max_subarray(A, low, high):
         return right_l, right_r, right_sum
     else:
         return cross_l, cross_r, cross_sum
+
+def find_max_subarray_linear(A, low, high):
+    """
+        Find the max subarray in O(n)
+        # Also listed as Ex4.1-5
+        :param A: array
+        :param low: leftmost index of the array
+        :param high: rightmost index of the array
+        :return: 
+            leftmost index of the max crossing subarray
+            rightmost index of the max crossing subarray
+            the sum of the max crossing subarray
+    """
+
+    # nums = A
+    # A = [nums[0]]
+    # for i in range(1, len(nums)):
+    #     A.append(max(A[i - 1] + nums[i], nums[i]))
+    # return max(A)
+
+    max_ending_here = max_so_far = A[low]
+
+    meh_l = low
+    meh_r = low
+    msf_l = low
+    msf_r = low
+
+    for i in range(low+1, high + 1):
+        if max_ending_here >= 0:
+            meh_r = i
+            max_ending_here = max_ending_here + A[i]
+        else:
+            meh_l = i
+            meh_r = i
+            max_ending_here = A[i]
+        if max_so_far <= max_ending_here:
+            msf_l = meh_l
+            msf_r = meh_r
+            max_so_far = max_ending_here
+    return (msf_l, msf_r, max_so_far)
+
+
+if __name__ == 'find_max_subarray':
+    print('Running as an imported module!')
+
+if __name__ == '__main__':
+    print('Running as a standalone program')

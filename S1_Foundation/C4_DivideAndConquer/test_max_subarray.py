@@ -15,6 +15,10 @@ class TestMaxSubarray(unittest.TestCase):
         (l, r, temp_sum) = find_max_subarray(self.A, 0, len(self.A) - 1)
         self.assertEqual((l, r, temp_sum), (7, 10, 43))
 
+    def test_max_subarray_linear(self):
+        (l, r, temp_sum) = find_max_subarray_linear(self.A, 0, len(self.A) - 1)
+        self.assertEqual((l, r, temp_sum), (7, 10, 43))
+
     def test_max_subarray2(self):
         (l, r, temp_sum) = find_max_subarray(self.short, 0, len(self.short) - 1)
         self.assertEqual((l, r, temp_sum), (0, 1, 7))
@@ -23,6 +27,12 @@ class TestMaxSubarray(unittest.TestCase):
         A = [3]
         (l, r, temp_sum) = find_max_subarray(A, 0, len(A) - 1)
         self.assertEqual((l, r, temp_sum), (0, 0, 3))
+
+    def test_neg(self):
+        A = [-1, -2, -3]
+        (l, r, temp_sum) = find_max_subarray(A, 0, len(A) - 1)
+        self.assertEqual((l, r, temp_sum), (0, 0, -1))
+
 
 def suite():
     suite = unittest.TestSuite()
