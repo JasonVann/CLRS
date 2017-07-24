@@ -27,3 +27,5 @@ def test_max_heapify():
     print(heap.data)
     max_heapify(heap, 1)
     print(heap.data)
+
+#test_max_heapify()
