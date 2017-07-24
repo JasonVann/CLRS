@@ -48,8 +48,7 @@ def test_max_heapify():
     A = [16, 4, 10, 14, 7, 9, 3, 2, 8, 1]
     heap = Heap.Heap(A)
     print(heap.data)
-    #max_heapify_recur(heap, 1)
-    max_heapify_recur(heap, 1)
+    max_heapify(heap, 1)
     print(heap.data)
 
-test_max_heapify()
+#test_max_heapify()
