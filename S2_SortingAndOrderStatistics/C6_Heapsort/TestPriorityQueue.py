@@ -41,5 +41,17 @@ class TestingPQ(unittest.TestCase):
         print("After deleting 2nd item: {}".format(A))
         self.assertEqual(A, [16, 8, 10, 4, 7, 9, 3, 2, 1])
 
+    def test_build_max_heap(self):
+        # PS6.1
+        A = [1,2,3,4,5,6]
+        B = A[:]
+        max_pq = MaxPriorityQueue(A)
+        print(A)
+        build_max_heap(max_pq)
+        print(A)
+        max_pq2 = MaxPriorityQueue(B)
+        build_max_heap2(max_pq2)
+        print(B, max_pq2.size)
+        self.assertNotEqual(A, B[0:len(A)])
 if __name__ == '__main__':
     unittest.main()

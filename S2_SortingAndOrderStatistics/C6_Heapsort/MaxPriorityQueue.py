@@ -59,3 +59,10 @@ class MaxPriorityQueue(Heap):
         A.pop(self.size - 1)
         self.size -= 1
         max_heapify(self, i)
+
+def build_max_heap2(A: Heap):
+    # PS 6.1
+    n = A.size
+    A.size = 1
+    for i in range(1, n):
+        A.max_heap_insert(A.data[i])
