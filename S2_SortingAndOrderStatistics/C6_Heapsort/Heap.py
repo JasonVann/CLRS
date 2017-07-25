@@ -1,5 +1,8 @@
 import math
 
+# Here it decided to have a simple Heap data structure and leave function max_heapify
+# not as class methods, so that it's the same as the interface defined in CLRS
+
 class Heap():
     def __init__(self, A:list):
         self.data = A
