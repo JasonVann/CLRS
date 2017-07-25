@@ -20,7 +20,7 @@ class TestingPQ(unittest.TestCase):
         max_pq = MaxPriorityQueue(A)
         print("Prior to increase key: {}".format(A))
         max_pq.heap_increase_key(8, 15)
-        print("After increasing key: {}".format(A))
+        print("After increasing key of 8th item to 15: {}".format(A))
         self.assertEqual(A, [16, 15, 10, 14, 7, 9, 3, 2, 8, 1])
 
     def test_max_heap_insert(self):
@@ -29,8 +29,17 @@ class TestingPQ(unittest.TestCase):
         max_pq = MaxPriorityQueue(A)
         print("Prior to insert: {}".format(A))
         max_pq.max_heap_insert(10)
-        print("After inserting: {}".format(A))
+        print("After inserting 10: {}".format(A))
         self.assertEqual(A, [15, 13, 10, 5, 12, 9, 7, 4, 0, 6, 2, 1, 8])
+
+    def test_max_heap_delete(self):
+        # 6.5-8
+        A = [16, 14, 10, 8, 7, 9, 3, 2, 4, 1]
+        max_pq = MaxPriorityQueue(A)
+        print("Prior to delete: {}".format(A))
+        max_pq.max_heap_delete(1)
+        print("After deleting 2nd item: {}".format(A))
+        self.assertEqual(A, [16, 8, 10, 4, 7, 9, 3, 2, 1])
 
 if __name__ == '__main__':
     unittest.main()

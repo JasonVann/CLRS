@@ -44,3 +44,18 @@ class MaxPriorityQueue(Heap):
         self.size += 1
         self.data.append(float('-inf'))
         self.heap_increase_key(self.size - 1, key)
+
+    def max_heap_delete(self, i):
+        '''
+        Deletes node i
+        For Ex6.5-8
+        '''
+        if i < 0 or i >= self.size:
+            raise "Invalid index"
+
+        A = self.data
+        A[i] = A[self.size - 1]
+        # Now the last item has been duplicated, delete the original one
+        A.pop(self.size - 1)
+        self.size -= 1
+        max_heapify(self, i)
