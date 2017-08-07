@@ -34,15 +34,38 @@ def partition(A, l, r, partition_type = 'rand'):
         A[pivot], A[i+1] = A[i+1], A[pivot]
         return i + 1
 
-    def randomized_partition(A, l, r):
+    def pick_last_equal():
+        '''
+        Pick last item as pivot
+        Returns q and t such that A[q..t] = A[q]
+        This is based on PS7.2
+        '''
+        pivot = A[r]
+        q = l - 1
+        t = l - 1
+        j = l
+        for j in range(l, r):
+            if A[j] < pivot:
+                A[t+1], A[j] = A[j], A[t+1]
+                A[q + 1], A[t+1] = A[t+1], A[q + 1]
+                q += 1
+                t += 1
+            elif A[j] == pivot:
+                A[t+1], A[j] = A[j], A[t+1]
+                t += 1
+
+        A[t+1], A[r] = A[r], A[t+1]
+        return q + 1, t + 1
+
+    def randomized_partition():
         '''
         To improve performance over presorted array, we randomly pick one item as pivot
         '''
         sample = random.randint(l, r)
         A[r], A[sample] = A[sample], A[r]
-        return partition(A, l, r)
+        return pick_last(A, l, r)
 
-    def hoare_partition(A, l, r):
+    def hoare_partition():
         '''
         The original partition algorithm from Hoare
         Every element in [l..j] <= every element in A[j+1...r]
@@ -61,11 +84,13 @@ def partition(A, l, r, partition_type = 'rand'):
                 return j
 
     if partition_type == 'rand':
-        pivot = randomized_partition(A, l, r)
+        pivot = randomized_partition()
     elif partition_type == 'hoare':
-        pivot = hoare_partition(A, l, r)
+        pivot = hoare_partition()
+    elif partition_type == 'equal':
+        return pick_last_equal()
     else:
-        pivot = pick_last(A, l, r)
+        pivot = pick_last()
     return pivot
 
 def test():
@@ -77,3 +102,12 @@ def Ex7_1():
     A = [19, 13, 9, 5, 12, 8, 7, 4, 11, 2, 6, 21]
     partition(A, 0, len(A) - 1, 'hoare')
     print(A)
+
+def PS7_2():
+    #A = [19, 13, 9, 5, 12, 8, 7, 4, 11, 2, 6, 21]
+    A = [4, 1, 2, 5, 4, 3, 6, 7, 4, 5]
+    res = partition(A, 0, len(A) - 1, 'equal')
+    print(res)
+    print(A)
+
+PS7_2()
