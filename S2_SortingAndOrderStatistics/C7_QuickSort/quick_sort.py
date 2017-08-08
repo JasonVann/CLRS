@@ -8,8 +8,13 @@ def quick_sort(A, l, r, partition_type="rand"):
     '''
     if l < r:
         pivot = partition(A, l, r, partition_type)
-        quick_sort(A, l, pivot - 1, partition_type)
-        quick_sort(A, pivot + 1, r, partition_type)
+        if partition_type == 'equal':
+            # In this case, pivot = (q, t), which contains equal items
+            quick_sort(A, l, pivot[0] - 1, partition_type)
+            quick_sort(A, pivot[1] + 1, r, partition_type)
+        else:
+            quick_sort(A, l, pivot - 1, partition_type)
+            quick_sort(A, pivot + 1, r, partition_type)
 
 def partition(A, l, r, partition_type = 'rand'):
     '''
@@ -109,5 +114,7 @@ def PS7_2():
     res = partition(A, 0, len(A) - 1, 'equal')
     print(res)
     print(A)
+    quick_sort(A, 0, len(A) - 1, partition_type = 'equal')
+    print(A)
 
-PS7_2()
+#PS7_2()
