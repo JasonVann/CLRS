@@ -68,7 +68,7 @@ def partition(A, l, r, partition_type = 'rand'):
         '''
         sample = random.randint(l, r)
         A[r], A[sample] = A[sample], A[r]
-        return pick_last(A, l, r)
+        return pick_last()
 
     def hoare_partition():
         '''
@@ -100,7 +100,7 @@ def partition(A, l, r, partition_type = 'rand'):
 
 def test():
     A = [19, 13, 9, 5, 12, 8, 7, 4, 21, 2, 6, 11]
-    quick_sort(A, 0, len(A) - 1, partition_type = 'hoare')
+    quick_sort(A, 0, len(A) - 1, partition_type = 'rand')
     print(A)
 
 def Ex7_1():
