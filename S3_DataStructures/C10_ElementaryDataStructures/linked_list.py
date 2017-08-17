@@ -6,8 +6,8 @@ class Node():
 
     def __str__(self):
         res = ''
-        if self.prev:
-            res += str(self.prev) + ', '
+        #if self.prev:
+        #    res += str(self.prev) + ', '
         res += str(self.val)
         return res
 
@@ -17,6 +17,12 @@ class Linked_List():
             self.head = Node(head)
         else:
             self.head = None
+
+    @property
+    def next(self):
+        if self.head == None or self.head.next == None:
+            return None
+        return Linked_List(self.head.next)
 
     def search(self, v):
         # Search for node with val = v
@@ -61,4 +67,4 @@ def test():
     print(res)
     print(ll.head)
 
-test()
+#test()
