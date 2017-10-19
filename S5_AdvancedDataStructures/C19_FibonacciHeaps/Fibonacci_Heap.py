@@ -62,6 +62,8 @@ def consolidate(H):
     for w in H.root_list:
         x = w
         d = x.degree
+        while d > len(A):
+            A.append(None)
         while A[d] != None:
             y = A[d]
             if x.key > y.key:
@@ -80,6 +82,11 @@ def consolidate(H):
                 H.root_list.append(A[i])
                 if A[i].key < H.min.key:
                     H.min = A[i]
+
+def D(n):
+    import math
+    thi = 0.5*(math.sqrt(5)+1)
+    return math.ceil(math.log(n, thi))
 
 def fib_heap_link(H, y, x):
     H.root_list.remove(y)
